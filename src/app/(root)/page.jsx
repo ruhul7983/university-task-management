@@ -1,6 +1,8 @@
 import EventCard from "./_components/EventsCard";
 import Join from "./_components/Join";
-
+import JoinClass from "./_components/JoinClass";
+import { getServerSession } from "next-auth";
+import { redirect } from 'next/navigation'
 // Function to generate a consistent color for each course
 const getColorForCourse = (courseName) => {
   const colors = [
@@ -23,7 +25,13 @@ const getColorForCourse = (courseName) => {
   return colors[index];
 };
 
-export default function Home() {
+export default async function Home() {
+  const session = await getServerSession();
+
+  if (!session) {
+    return redirect("/login");
+  }
+
   const events = [
     {
       eventName: "Quiz 1",
@@ -54,7 +62,8 @@ export default function Home() {
       daysLeft: 16,
     },
   ];
-
+  
+  
   return (
     <main className="w-full min-h-screen bg-gray-50 mt-20">
       <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">

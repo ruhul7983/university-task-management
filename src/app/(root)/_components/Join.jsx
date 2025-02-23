@@ -4,7 +4,7 @@ import { FaPlus } from "react-icons/fa6";
 import { FaRegUser } from "react-icons/fa";
 import JoinClass from "./JoinClass";
 import CreateClassModal from "./CreateClassModal";
-const Join = () => {
+const  Join = () => {
     const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
     const [isCreateClassOpen, setIsCreateClassOpen] = useState(false);
     return (

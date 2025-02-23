@@ -1,9 +1,9 @@
 "use client";
+import { useSession,signOut  } from "next-auth/react";
 
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-
 const NavLink = ({ href, children }) => (
   <Link
     href={href}
@@ -24,6 +24,11 @@ const MobileNavLink = ({ href, children }) => (
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const { data: session, status } = useSession();
+  if (status === "loading") {
+    return <p>Loading...</p>; // Handle loading state
+  }
+  console.log("Data as s: ", session);
 
   return (
     <nav className="fixed top-4 left-4 right-4 z-50 ">
@@ -50,9 +55,16 @@ const Navbar = () => {
               </div>
             </div>
             <div className="hidden md:block">
-              <button className="bg-primary  px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors duration-200">
-                Profile
-              </button>
+              {session ? (
+                <button onClick={() => signOut()} className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition-colors duration-200">
+                  Logout
+                </button>
+              ) : (
+                <Link href={"/login"} className="bg-primary px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors duration-200">
+                  Login
+                </Link>
+              )}
+
             </div>
             <div className="md:hidden">
               <button
