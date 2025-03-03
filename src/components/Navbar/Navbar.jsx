@@ -1,9 +1,10 @@
 "use client";
 import { useSession,signOut  } from "next-auth/react";
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import axios from "axios";
 const NavLink = ({ href, children }) => (
   <Link
     href={href}
@@ -24,14 +25,25 @@ const MobileNavLink = ({ href, children }) => (
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isCr,setCr] = useState(false);
+  
   const { data: session, status } = useSession();
+  useEffect(()=>{
+    axios.get(`http://localhost:5000/cr?email=${session?.user?.email}`)
+      .then((response) => {
+        console.log(response.data);
+        setCr(response.data.isCr);
+      })
+      .catch((error) => {
+        console.error("Error fetching classroom data:", error);
+      });
+  },[session])
   if (status === "loading") {
-    return <p>Loading...</p>; // Handle loading state
+    return <p></p>; // Handle loading state
   }
-  console.log("Data as s: ", session);
 
   return (
-    <nav className="fixed top-4 left-4 right-4 z-50 ">
+    <nav className="fixed top-4 left-4 right-4 ">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ">
         <div className="backdrop-blur-md bg-white/50 rounded-full border hover:shadow transition-all">
           <div className="flex items-center justify-between h-16 px-4">
@@ -51,13 +63,15 @@ const Navbar = () => {
                 <NavLink href="/">Home</NavLink>
                 <NavLink href="/tasks">Tasks</NavLink>
                 <NavLink href="/calendar">Calendar</NavLink>
-                <NavLink href="/messages">Messages</NavLink>
+                {
+                  isCr && <NavLink href="/cr">CR</NavLink>
+                }
               </div>
             </div>
             <div className="hidden md:block">
               {session ? (
                 <button onClick={() => signOut()} className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition-colors duration-200">
-                  Logout
+                  Logout {session.user.name}
                 </button>
               ) : (
                 <Link href={"/login"} className="bg-primary px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors duration-200">
@@ -106,7 +120,10 @@ const Navbar = () => {
             <MobileNavLink href="/">Home</MobileNavLink>
             <MobileNavLink href="/tasks">Tasks</MobileNavLink>
             <MobileNavLink href="/calendar">Calendar</MobileNavLink>
-            <MobileNavLink href="/messages">Messages</MobileNavLink>
+            {
+              isCr && <MobileNavLink href="/cr">CR</MobileNavLink>
+            }
+            <MobileNavLink href="/cr">Cr</MobileNavLink>
             <MobileNavLink href="/profile">Profile</MobileNavLink>
           </div>
         </div>

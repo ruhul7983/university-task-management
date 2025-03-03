@@ -8,7 +8,7 @@ const  Join = () => {
     const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
     const [isCreateClassOpen, setIsCreateClassOpen] = useState(false);
     return (
-        <main className="w-full min-h-screen bg-gradient-to-br from-blue-50 to-white ">
+        <main className="w-full min-h-[80vh]  ">
             <div className="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
                     <h1 className="text-2xl sm:text-5xl font-bold text-gray-900 mb-6">

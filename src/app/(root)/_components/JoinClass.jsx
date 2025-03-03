@@ -1,13 +1,30 @@
 "use client";
-
+import { ToastContainer, toast } from 'react-toastify';
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
-
+import { useSession } from "next-auth/react";
+import axios from "axios";
 const JoinClass = ({ isOpen, onClose }) => {
+  const { data: session, status } = useSession();
+
   if (!isOpen) return null;
-  
+  const handleJoinClass = async(e) => {
+    e.preventDefault();
+    const classCode = e.target.classCode.value;
+    const email = session.user.email;
+    const joinClass = { email, classCode };
+    const data = await axios.post("http://localhost:5000/join-classroom", joinClass);
+    console.log(data.data);
+
+    if (data.data.status === 200) {
+      return toast.success("Join Classroom successfully");
+    } else {
+      return toast.error("Failed to join classroom");
+    }
+  }
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+      <ToastContainer />
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -22,7 +39,7 @@ const JoinClass = ({ isOpen, onClose }) => {
         </button>
         <div className="p-6">
           <h2 className="text-2xl font-semibold mb-4">Join Classroom</h2>
-          <form className="space-y-4">
+          <form onSubmit={handleJoinClass} className="space-y-4">
             <div>
               <label
                 htmlFor="classCode"
@@ -35,6 +52,8 @@ const JoinClass = ({ isOpen, onClose }) => {
                 id="classCode"
                 className="w-full px-4 py-2 text-black border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-0 transition-all"
                 placeholder="Enter class code"
+                name="classCode"
+                required
               />
             </div>
             <button
