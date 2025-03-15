@@ -48,7 +48,7 @@ export default function Home() {
         setEvents(response.data.events);
       })
       .catch((error) => {
-        console.error("Error fetching classroom data:", error);
+        console.error("Error fetching classrooms data:", error);
       });
   }, [session]);
 
