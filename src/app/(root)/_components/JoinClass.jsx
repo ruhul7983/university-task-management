@@ -13,7 +13,7 @@ const JoinClass = ({ isOpen, onClose }) => {
     const classCode = e.target.classCode.value;
     const email = session.user.email;
     const joinClass = { email, classCode };
-    const data = await axios.post("http://localhost:5000/join-classroom", joinClass);
+    const data = await axios.post("https://os-project-backend.vercel.app/join-classroom", joinClass);
     console.log(data.data);
 
     if (data.data.status === 200) {

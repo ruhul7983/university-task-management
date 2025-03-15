@@ -29,7 +29,7 @@ const Navbar = () => {
   
   const { data: session, status } = useSession();
   useEffect(()=>{
-    axios.get(`http://localhost:5000/cr?email=${session?.user?.email}`)
+    axios.get(`https://os-project-backend.vercel.app/cr?email=${session?.user?.email}`)
       .then((response) => {
         console.log(response.data);
         setCr(response.data.isCr);
@@ -56,7 +56,7 @@ const Navbar = () => {
                 className="mr-3"
                 priority
               />
-              <span className="text-xl font-semibold text-gray-800">UniTask</span>
+              <span className="text-xl font-semibold text-gray-800">DIU Task Management</span>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">

@@ -13,7 +13,7 @@ const handler = NextAuth({
       async authorize(credentials, req) {
         try {
           // Send request to your backend for authentication
-          const response = await axios.post("http://localhost:5000/users/login", {
+          const response = await axios.post("https://os-project-backend.vercel.app/users/login", {
             email: credentials?.email,
             password: credentials?.password
           });

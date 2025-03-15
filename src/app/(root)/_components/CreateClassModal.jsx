@@ -17,7 +17,7 @@ const CreateClassModal = ({ isOpen, onClose }) => {
     console.log(semesterName,sectionName, classCode);
     const email = session.user.email;
     const newClass = { email ,semesterName, sectionName, classCode };
-    const data =await axios.post("http://localhost:5000/classroom", newClass);
+    const data =await axios.post("https://os-project-backend.vercel.app/classroom", newClass);
     console.log(data.data);
     
     if (data.data.status === 200) {

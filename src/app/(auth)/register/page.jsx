@@ -2,16 +2,23 @@
 import axios from "axios";
 import Link from "next/link"
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react"; 
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 export default function SignupPage() {
   const router = useRouter()
+  const [error, setError] = useState("");
   const handleSubmit = async (e) => {
+    setError("")
     e.preventDefault()
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
     const name = form.name.value;
     const phone = form.phone.value;
+    if (email !== email.split("@")[0] + "@diu.edu.bd") {
+      setError("Email must be a @diu.edu.bd");
+      return;
+    }
     const data = {
       email,
       password,
@@ -19,15 +26,15 @@ export default function SignupPage() {
       phone
     }
     try {
-      const res = await axios.post("http://localhost:5000/users", 
+      const res = await axios.post("https://os-project-backend.vercel.app/users",
         data
       )
       console.log(res.data.status);
-      
+
       if (res.data.status) {
         // Sign in the user immediately after successful registration
         console.log("IN check");
-        
+
         const result = await signIn("credentials", {
           redirect: false,
           email: email,
@@ -37,7 +44,7 @@ export default function SignupPage() {
         if (result?.error) {
           // setError(result.error)
         } else {
-          router.push("/") 
+          router.push("/")
         }
       } else {
       }
@@ -46,7 +53,7 @@ export default function SignupPage() {
   }
   return (
     <div className="min-h-[90vh] flex flex-col">
-     
+
 
       <main className="flex-grow flex items-center justify-center px-4 py-12">
         <div className="bg-card text-card-foreground rounded-lg shadow-lg p-8 w-full max-w-md">
@@ -72,11 +79,11 @@ export default function SignupPage() {
                 </label>
                 <input
                   id="phone"
-                  type="tel"
+                  type="number"
                   placeholder="017123456789"
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    name="phone"
+                  name="phone"
                 />
               </div>
               <div>
@@ -89,8 +96,10 @@ export default function SignupPage() {
                   placeholder="your.email@diu.edu.bd"
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    name="email"
+                  name="email"
                 />
+                {error && <p className="text-red-500 text-sm ">{error}</p>}
+
               </div>
               <div>
                 <label htmlFor="password" className="block text-sm font-medium mb-1">
@@ -102,7 +111,7 @@ export default function SignupPage() {
                   placeholder="••••••••"
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    name="password"
+                  name="password"
                 />
               </div>
               <button

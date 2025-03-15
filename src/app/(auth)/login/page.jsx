@@ -38,7 +38,7 @@ export default function LoginPage() {
                 <input
                   id="email"
                   type="email"
-                  placeholder="your.email@university.edu"
+                  placeholder="youremail@diu.edu.bd"
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                   name="email"
